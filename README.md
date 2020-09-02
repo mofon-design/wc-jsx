@@ -2,7 +2,7 @@
 
 Create web components with JSX.
 
-[![NPM version](https://img.shields.io/npm/v/@mofon-design/wc-jsx.svg?style=flat)](https://www.npmjs.com/package/@mofon-design/wc-jsx) [![Install size](https://packagephobia.com/badge?p=@mofon-design/wc-jsx)](https://packagephobia.com/result?p=@mofon-design/wc-jsx)
+[![NPM version](https://img.shields.io/npm/v/@mofon-design/wc-jsx.svg?style=flat)](https://www.npmjs.com/package/@mofon-design/wc-jsx) [![Install size](https://packagephobia.com/badge?p=@mofon-design/wc-jsx)](https://packagephobia.com/result?p=@mofon-design/wc-jsx) [![Netlify Status](https://api.netlify.com/api/v1/badges/7c9fc78b-2942-4793-bc35-59212e45372a/deploy-status)](https://app.netlify.com/sites/nervous-minsky-5ffa99/deploys)
 
 ## Examples
 
