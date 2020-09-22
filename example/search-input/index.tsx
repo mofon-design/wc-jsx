@@ -4,8 +4,8 @@ import { HybridDOMTreeRootNode } from '../../src/types';
 
 @tag('search-input')
 export class SearchInput extends HTMLElement implements CoreElement {
-  @property('string')
-  value!: string;
+  @property.string<SearchInput>()
+  value: string | undefined;
 
   hybridDOMTree?: HybridDOMTreeRootNode;
 
