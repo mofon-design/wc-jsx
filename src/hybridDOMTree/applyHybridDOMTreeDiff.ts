@@ -164,17 +164,17 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
 
             // node.parentInstance.insertBefore(fragment, node.nextSiblingInstance);
 
-            // * ASSERT `nextSiblingInstance.parentNode.isSameNode(node.parentInstance)`
-            childInstances = childInstances.reverse();
+            // * ASSERT `nextSiblingInstance.parentNode.isSameNode(parentInstance)`
+            parentInstance = node.parentInstance;
             nextSiblingInstance = node.nextSiblingInstance;
 
             for (
-              instanceTraversalIndex = 0;
-              instanceTraversalIndex < childInstances.length;
-              instanceTraversalIndex += 1
+              instanceTraversalIndex = childInstances.length - 1;
+              instanceTraversalIndex >= 0;
+              instanceTraversalIndex -= 1
             ) {
               instance = childInstances[instanceTraversalIndex];
-              node.parentInstance.insertBefore(instance, nextSiblingInstance);
+              parentInstance.insertBefore(instance, nextSiblingInstance);
               nextSiblingInstance = instance;
             }
           }
