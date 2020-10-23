@@ -21,12 +21,21 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
   let childrenQueue: HybridDOMTreeChildNode[];
   let child: HybridDOMTreeChildNode | undefined;
   let children: readonly HybridDOMTreeChildNode[];
+
   let refUpdate: ArgsType<typeof applyMDWCRef>;
   let refUpdatesQueueFragment: ArgsType<typeof applyMDWCRef>[];
+
   let childrenAndParentInstanceQueue: [readonly HybridDOMTreeChildNode[], Node][];
   let childrenAndParentInstanceQueueItem: [readonly HybridDOMTreeChildNode[], Node] | undefined;
 
-  for (payload of queue) {
+  let queueTraversalIndex: number;
+  let childTraversalIndex: number;
+  let instanceTraversalIndex: number;
+  let refUpdateTraversalIndex: number;
+
+  for (queueTraversalIndex = 0; queueTraversalIndex < queue.length; queueTraversalIndex += 1) {
+    payload = queue[queueTraversalIndex];
+
     switch (payload.type) {
       case DiffType.UPDATE:
         applyPropertyUpdateQueue(payload.updates, payload.node);
@@ -54,7 +63,13 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
         while ((childrenAndParentInstanceQueueItem = childrenAndParentInstanceQueue.shift())) {
           [children, parentInstance] = childrenAndParentInstanceQueueItem;
 
-          for (child of children) {
+          for (
+            childTraversalIndex = 0;
+            childTraversalIndex < children.length;
+            childTraversalIndex += 1
+          ) {
+            child = children[childTraversalIndex];
+
             switch (child.type) {
               case HybridDOMTreeNodeType.HTML_ELEMENT:
                 // includes ref
@@ -96,7 +111,12 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
           if (childInstances.length) {
             parentInstance = node.parentInstance;
 
-            for (instance of childInstances) {
+            for (
+              instanceTraversalIndex = 0;
+              instanceTraversalIndex < childInstances.length;
+              instanceTraversalIndex += 1
+            ) {
+              instance = childInstances[instanceTraversalIndex];
               // * ASSERT `instance.parentNode.isSameNode(parentInstance)`
               parentInstance.removeChild(instance);
             }
@@ -137,7 +157,8 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
           childInstances = node.childInstances;
 
           if (childInstances.length) {
-            // for (instance of childInstances) {
+            // for (instanceIndex = 0; instanceIndex < childInstances.length; instanceIndex += 1) {
+            //   instance = childInstances[instanceIndex];
             //   fragment.appendChild(instance);
             // }
 
@@ -147,7 +168,12 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
             childInstances = childInstances.reverse();
             nextSiblingInstance = node.nextSiblingInstance;
 
-            for (instance of childInstances) {
+            for (
+              instanceTraversalIndex = 0;
+              instanceTraversalIndex < childInstances.length;
+              instanceTraversalIndex += 1
+            ) {
+              instance = childInstances[instanceTraversalIndex];
               node.parentInstance.insertBefore(instance, nextSiblingInstance);
               nextSiblingInstance = instance;
             }
@@ -163,7 +189,12 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
     }
   }
 
-  for (refUpdate of refUpdatesQueue) {
+  for (
+    refUpdateTraversalIndex = 0;
+    refUpdateTraversalIndex < refUpdatesQueue.length;
+    refUpdateTraversalIndex += 1
+  ) {
+    refUpdate = refUpdatesQueue[refUpdateTraversalIndex];
     applyMDWCRef(refUpdate[0], refUpdate[1]);
   }
 }

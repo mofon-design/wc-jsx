@@ -136,62 +136,77 @@ export { shiftHybridDOMTreeNodeFromKeyNodeMap };
 export function shiftRestNodesOfHybridDOMTreeKeyNodeMap(
   map: HybridDOMTreeKeyNodeMap,
 ): (HybridDOMTreeChildNode | undefined)[] {
+  type Lv1Map = HybridDOMTreeKeyNodeMap[HybridDOMTreeChildNodeType];
+  type Lv2Map = Exclude<Lv1Map, any[]>[string];
+  type Lv3Map = Exclude<Lv2Map, any[]>[string];
+
   const restRecords: (HybridDOMTreeChildNode | undefined)[] = [];
 
   let index: number;
   let node: HybridDOMTreeChildNode;
-  let firstCharacteristic: string;
-  let secondCharacteristic: string;
-  let submap: HybridDOMTreeKeyNodeMap[HybridDOMTreeChildNodeType];
-  let subsubmap: HybridDOMTreeKeyNodeMap[HybridDOMTreeChildNodeType][string];
 
-  submap = map[HybridDOMTreeNodeType.FRAGMENT];
-  for (firstCharacteristic in submap) {
-    if (!hasOwnProperty.call(submap, firstCharacteristic)) {
+  let lv1Map: Lv1Map;
+  let lv2Map: Lv2Map;
+  let lv3Map: Lv3Map;
+
+  let lv1Characteristic: string;
+  let lv2Characteristic: string;
+
+  let traversalIndex: number;
+
+  lv1Map = map[HybridDOMTreeNodeType.FRAGMENT];
+  for (lv1Characteristic in lv1Map) {
+    if (!hasOwnProperty.call(lv1Map, lv1Characteristic)) {
       continue;
     }
 
-    for ([node, index] of submap[firstCharacteristic]) {
+    lv2Map = lv1Map[lv1Characteristic];
+    for (traversalIndex = 0; traversalIndex < lv2Map.length; traversalIndex += 1) {
+      [node, index] = lv2Map[traversalIndex];
       // * ASSERT `hasOwnProperty.call(restRecords, index)`
       restRecords[index] = node;
     }
 
-    delete submap[firstCharacteristic];
+    delete lv1Map[lv1Characteristic];
   }
 
-  submap = map[HybridDOMTreeNodeType.TEXT];
-  for (firstCharacteristic in submap) {
-    if (!hasOwnProperty.call(submap, firstCharacteristic)) {
+  lv1Map = map[HybridDOMTreeNodeType.TEXT];
+  for (lv1Characteristic in lv1Map) {
+    if (!hasOwnProperty.call(lv1Map, lv1Characteristic)) {
       continue;
     }
 
-    for ([node, index] of submap[firstCharacteristic]) {
+    lv2Map = lv1Map[lv1Characteristic];
+    for (traversalIndex = 0; traversalIndex < lv2Map.length; traversalIndex += 1) {
+      [node, index] = lv2Map[traversalIndex];
       // * ASSERT `hasOwnProperty.call(restRecords, index)`
       restRecords[index] = node;
     }
 
-    delete submap[firstCharacteristic];
+    delete lv1Map[lv1Characteristic];
   }
 
-  submap = map[HybridDOMTreeNodeType.HTML_ELEMENT];
-  for (firstCharacteristic in submap) {
-    if (!hasOwnProperty.call(submap, firstCharacteristic)) {
+  lv1Map = map[HybridDOMTreeNodeType.HTML_ELEMENT];
+  for (lv1Characteristic in lv1Map) {
+    if (!hasOwnProperty.call(lv1Map, lv1Characteristic)) {
       continue;
     }
 
-    subsubmap = submap[firstCharacteristic];
-    for (secondCharacteristic in subsubmap) {
-      if (!hasOwnProperty.call(subsubmap, secondCharacteristic)) {
+    lv2Map = lv1Map[lv1Characteristic];
+    for (lv2Characteristic in lv2Map) {
+      if (!hasOwnProperty.call(lv2Map, lv2Characteristic)) {
         continue;
       }
 
-      for ([node, index] of subsubmap[secondCharacteristic]) {
+      lv3Map = lv2Map[lv2Characteristic];
+      for (traversalIndex = 0; traversalIndex < lv3Map.length; traversalIndex += 1) {
+        [node, index] = lv3Map[traversalIndex];
         // * ASSERT `hasOwnProperty.call(restRecords, index)`
         restRecords[index] = node;
       }
     }
 
-    delete submap[firstCharacteristic];
+    delete lv1Map[lv1Characteristic];
   }
 
   return restRecords;

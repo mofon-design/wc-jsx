@@ -52,11 +52,19 @@ const HybridDOMTreeChildNodePropertyDescriptors: {
       let fragmentChildrenQueue: HybridDOMTreeChildNode[];
       let fragmentChild: HybridDOMTreeChildNode | undefined;
 
+      let childTraversalIndex: number;
+
       do {
         isBeforeSelf = true;
         children = self.parent.children;
 
-        for (child of children) {
+        for (
+          childTraversalIndex = 0;
+          childTraversalIndex < children.length;
+          childTraversalIndex += 1
+        ) {
+          child = children[childTraversalIndex];
+
           if (child === self) {
             isBeforeSelf = false;
             continue;

@@ -64,6 +64,8 @@ export function diffHybridDOMTree(
   let tagName: string;
   let textContent: string;
 
+  let traversalIndex: number;
+
   // eslint-disable-next-line no-cond-assign
   while ((top = queue.shift())) {
     matchedNodes = [];
@@ -174,7 +176,13 @@ export function diffHybridDOMTree(
     }
 
     lastIndex = 0;
-    for (nextIndex of mapPrevIndexOfMatchedNodesToNextIndex) {
+    for (
+      traversalIndex = 0;
+      traversalIndex < mapPrevIndexOfMatchedNodesToNextIndex.length;
+      traversalIndex += 1
+    ) {
+      nextIndex = mapPrevIndexOfMatchedNodesToNextIndex[traversalIndex];
+
       if (nextIndex !== undefined) {
         if (nextIndex === lastIndex) {
           // * ASSERT `nextIndex < matchedNodes.length`
@@ -185,7 +193,9 @@ export function diffHybridDOMTree(
       }
     }
 
-    for (existsNode of matchedNodes) {
+    for (traversalIndex = 0; traversalIndex < matchedNodes.length; traversalIndex += 1) {
+      existsNode = matchedNodes[traversalIndex];
+
       if (existsNode) {
         diffQueue.unshift({ node: existsNode, type: DiffType.MOVE });
       }
@@ -193,7 +203,9 @@ export function diffHybridDOMTree(
 
     removedNodes = shiftRestNodesOfHybridDOMTreeKeyNodeMap(keyNodeMap);
 
-    for (existsNode of removedNodes) {
+    for (traversalIndex = 0; traversalIndex < removedNodes.length; traversalIndex += 1) {
+      existsNode = removedNodes[traversalIndex];
+
       if (existsNode) {
         diffQueue.unshift({ node: existsNode, type: DiffType.REMOVE });
       }

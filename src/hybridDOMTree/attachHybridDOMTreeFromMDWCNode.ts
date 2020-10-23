@@ -21,17 +21,27 @@ export function attachHybridDOMTreeFromMDWCNode(
 
   let tagName: string;
   let textContent: string;
+
   let node: HybridDOMTreeChildNode;
   let top: TraversalQueueItem | undefined;
+
   let element: MDWC.MDWCElement | MDWC.MDWCText;
   let elements: readonly (MDWC.MDWCElement | MDWC.MDWCText)[];
+
+  let elementTraversalIndex: number;
 
   // eslint-disable-next-line no-cond-assign
   while ((top = queue.shift())) {
     // eslint-disable-next-line no-param-reassign
     [elements, parent] = top;
 
-    for (element of elements) {
+    for (
+      elementTraversalIndex = 0;
+      elementTraversalIndex < elements.length;
+      elementTraversalIndex += 1
+    ) {
+      element = elements[elementTraversalIndex];
+
       if (typeof element !== 'object') {
         textContent = String(element);
         node = createHybridDOMTreeChildNode(HybridDOMTreeNodeType.TEXT, {
