@@ -1,6 +1,6 @@
 {
   "name": "@mofon-design/wc-jsx",
-  "version": "0.6.0-beta.0",
+  "version": "0.6.0-beta.1",
   "description": "Create web components with JSX",
   "license": "MIT",
   "main": "lib/index.js",
