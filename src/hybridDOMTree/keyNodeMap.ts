@@ -162,8 +162,9 @@ export function shiftRestNodesOfHybridDOMTreeKeyNodeMap(
 
     lv2Map = lv1Map[lv1Characteristic];
     for (traversalIndex = 0; traversalIndex < lv2Map.length; traversalIndex += 1) {
-      [node, index] = lv2Map[traversalIndex];
-      // * ASSERT `hasOwnProperty.call(restRecords, index)`
+      node = lv2Map[traversalIndex][0];
+      index = lv2Map[traversalIndex][1];
+      // * ASSERT `!hasOwnProperty.call(restRecords, index)`
       restRecords[index] = node;
     }
 
@@ -178,8 +179,9 @@ export function shiftRestNodesOfHybridDOMTreeKeyNodeMap(
 
     lv2Map = lv1Map[lv1Characteristic];
     for (traversalIndex = 0; traversalIndex < lv2Map.length; traversalIndex += 1) {
-      [node, index] = lv2Map[traversalIndex];
-      // * ASSERT `hasOwnProperty.call(restRecords, index)`
+      node = lv2Map[traversalIndex][0];
+      index = lv2Map[traversalIndex][1];
+      // * ASSERT `!hasOwnProperty.call(restRecords, index)`
       restRecords[index] = node;
     }
 
@@ -200,8 +202,9 @@ export function shiftRestNodesOfHybridDOMTreeKeyNodeMap(
 
       lv3Map = lv2Map[lv2Characteristic];
       for (traversalIndex = 0; traversalIndex < lv3Map.length; traversalIndex += 1) {
-        [node, index] = lv3Map[traversalIndex];
-        // * ASSERT `hasOwnProperty.call(restRecords, index)`
+        node = lv3Map[traversalIndex][0];
+        index = lv3Map[traversalIndex][1];
+        // * ASSERT `!hasOwnProperty.call(restRecords, index)`
         restRecords[index] = node;
       }
     }

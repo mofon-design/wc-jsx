@@ -61,7 +61,8 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
 
         // eslint-disable-next-line no-cond-assign
         while ((childrenAndParentInstanceQueueItem = childrenAndParentInstanceQueue.shift())) {
-          [children, parentInstance] = childrenAndParentInstanceQueueItem;
+          children = childrenAndParentInstanceQueueItem[0];
+          parentInstance = childrenAndParentInstanceQueueItem[1];
 
           for (
             childTraversalIndex = 0;

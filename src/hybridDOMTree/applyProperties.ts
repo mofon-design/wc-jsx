@@ -21,7 +21,9 @@ export function applyPropertyUpdateQueue(
   let queueTraversalIndex: number;
 
   for (queueTraversalIndex = 0; queueTraversalIndex < queue.length; queueTraversalIndex += 1) {
-    [propKey, oldValue, newValue] = queue[queueTraversalIndex];
+    propKey = queue[queueTraversalIndex][0];
+    oldValue = queue[queueTraversalIndex][1];
+    newValue = queue[queueTraversalIndex][2];
 
     if (propKey === ReservedProperty.REF) {
       applyMDWCRef(oldValue as MDWC.Ref<Node>, null);

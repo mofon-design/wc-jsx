@@ -32,8 +32,9 @@ export function attachHybridDOMTreeFromMDWCNode(
 
   // eslint-disable-next-line no-cond-assign
   while ((top = queue.shift())) {
+    elements = top[0];
     // eslint-disable-next-line no-param-reassign
-    [elements, parent] = top;
+    parent = top[1];
 
     for (
       elementTraversalIndex = 0;
