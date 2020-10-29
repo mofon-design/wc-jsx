@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "index.umd.js",
   "module": "es/index.js",
-  "types": "src/index.d.ts",
+  "types": "src/index.ts",
   "typings": "typings.d.ts",
   "scripts": {
     "build": "gulp",
