@@ -74,28 +74,28 @@ export function createHybridDOMTreeKeyNodeMap(
 /**
  * Given multiple characteristics, match the first existing node in the map.
  */
-function shiftHybridDOMTreeNodeFromKeyNodeMap(
+export function shiftHybridDOMTreeNodeFromKeyNodeMap(
   map: HybridDOMTreeKeyNodeMap,
   type: HybridDOMTreeNodeType.FRAGMENT,
   key: string,
 ): [HybridDOMTreeFragmentNode, number] | undefined;
-function shiftHybridDOMTreeNodeFromKeyNodeMap(
+export function shiftHybridDOMTreeNodeFromKeyNodeMap(
   map: HybridDOMTreeKeyNodeMap,
   type: HybridDOMTreeNodeType.HTML_ELEMENT,
   tagName: string,
   key: string,
 ): [HybridDOMTreeHTMLElementNode, number] | undefined;
-function shiftHybridDOMTreeNodeFromKeyNodeMap(
+export function shiftHybridDOMTreeNodeFromKeyNodeMap(
   map: HybridDOMTreeKeyNodeMap,
   type: HybridDOMTreeNodeType.TEXT,
   textContent: string,
 ): [HybridDOMTreeTextNode, number] | undefined;
-function shiftHybridDOMTreeNodeFromKeyNodeMap(
+export function shiftHybridDOMTreeNodeFromKeyNodeMap(
   map: HybridDOMTreeKeyNodeMap,
   type: HybridDOMTreeChildNodeType,
   firstCharacteristic: string,
   secondCharacteristic?: string,
-): [HybridDOMTreeChildNode, number] | undefined {
+): ShiftHybridDOMTreeNodeFromKeyNodeMapMixedReturnType | undefined {
   if (type === HybridDOMTreeNodeType.FRAGMENT) {
     const submap = map[type];
     if (!hasOwnProperty.call(submap, firstCharacteristic)) {
@@ -126,8 +126,6 @@ function shiftHybridDOMTreeNodeFromKeyNodeMap(
 
   return subsubmap[secondCharacteristic!].shift();
 }
-
-export { shiftHybridDOMTreeNodeFromKeyNodeMap };
 
 /**
  * Take out all the remaining nodes in the key-node map.
@@ -214,6 +212,11 @@ export function shiftRestNodesOfHybridDOMTreeKeyNodeMap(
 
   return restRecords;
 }
+
+export type ShiftHybridDOMTreeNodeFromKeyNodeMapMixedReturnType =
+  | [HybridDOMTreeFragmentNode, number]
+  | [HybridDOMTreeHTMLElementNode, number]
+  | [HybridDOMTreeTextNode, number];
 
 export interface HybridDOMTreeKeyNodeMap {
   [HybridDOMTreeNodeType.FRAGMENT]: Record<string, [HybridDOMTreeFragmentNode, number][]>;

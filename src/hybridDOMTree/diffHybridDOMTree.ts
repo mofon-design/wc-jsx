@@ -16,6 +16,7 @@ import { diffProperties } from './diffProperties';
 import { formatMDWCKey } from './formatMDWCKey';
 import {
   HybridDOMTreeKeyNodeMap,
+  ShiftHybridDOMTreeNodeFromKeyNodeMapMixedReturnType,
   createHybridDOMTreeKeyNodeMap,
   shiftHybridDOMTreeNodeFromKeyNodeMap,
   shiftRestNodesOfHybridDOMTreeKeyNodeMap,
@@ -59,6 +60,7 @@ export function diffHybridDOMTree(
   let nextIndex: number | undefined;
   let mapPrevIndexOfMatchedNodesToNextIndex: number[];
   let matchedNodes: (HybridDOMTreeChildNode | undefined)[];
+  let shiftedHybridDOMTreeNode: ShiftHybridDOMTreeNodeFromKeyNodeMapMixedReturnType | [];
 
   let key: string;
   let tagName: string;
@@ -79,12 +81,16 @@ export function diffHybridDOMTree(
 
       if (typeof nonEmptyMDWCNode !== 'object') {
         textContent = String(nonEmptyMDWCNode);
-        [existsNode, lastIndex] =
+
+        shiftedHybridDOMTreeNode =
           shiftHybridDOMTreeNodeFromKeyNodeMap(
             keyNodeMap,
             HybridDOMTreeNodeType.TEXT,
             textContent,
           ) || [];
+
+        existsNode = shiftedHybridDOMTreeNode[0];
+        lastIndex = shiftedHybridDOMTreeNode[1];
 
         node = createHybridDOMTreeChildNode(HybridDOMTreeNodeType.TEXT, {
           instance:
@@ -106,9 +112,12 @@ export function diffHybridDOMTree(
       key = formatMDWCKey(nonEmptyMDWCNode.key);
 
       if (isMDWCFragmentType(nonEmptyMDWCNode.type)) {
-        [existsNode, lastIndex] =
+        shiftedHybridDOMTreeNode =
           shiftHybridDOMTreeNodeFromKeyNodeMap(keyNodeMap, HybridDOMTreeNodeType.FRAGMENT, key) ||
           [];
+
+        existsNode = shiftedHybridDOMTreeNode[0];
+        lastIndex = shiftedHybridDOMTreeNode[1];
 
         node = createHybridDOMTreeChildNode(HybridDOMTreeNodeType.FRAGMENT, {
           children: [],
@@ -134,13 +143,16 @@ export function diffHybridDOMTree(
             ? nonEmptyMDWCNode.type
             : nonEmptyMDWCNode.type.tagName!;
 
-        [existsNode, lastIndex] =
+        shiftedHybridDOMTreeNode =
           shiftHybridDOMTreeNodeFromKeyNodeMap(
             keyNodeMap,
             HybridDOMTreeNodeType.HTML_ELEMENT,
             tagName,
             key,
           ) || [];
+
+        existsNode = shiftedHybridDOMTreeNode[0];
+        lastIndex = shiftedHybridDOMTreeNode[1];
 
         node = createHybridDOMTreeChildNode(HybridDOMTreeNodeType.HTML_ELEMENT, {
           children: [],
