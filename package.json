@@ -1,6 +1,6 @@
 {
   "name": "@mofon-design/wc-jsx",
-  "version": "0.6.0-beta.1",
+  "version": "0.7.0-beta.0",
   "description": "Create web components with JSX",
   "license": "MIT",
   "main": "index.umd.js",
@@ -29,7 +29,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.0",
     "@babel/preset-env": "^7.12.0",
     "@mofon-design/csstype": "^1.0.0",
-    "@mofon-design/wc-core": "^0.7.0-beta.1",
+    "@mofon-design/wc-core": "^0.7.0-beta.2",
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "@types/babel__core": "^7.1.10",
