@@ -21,14 +21,14 @@ const HybridDOMTreeChildNodePropertyDescriptors: {
       }
 
       const childInstances: Node[] = [];
-      const children: HybridDOMTreeChildNode[] = this.children.slice(0);
 
       let child: HybridDOMTreeChildNode | undefined;
+      let children: HybridDOMTreeChildNode[] = this.children.slice(0);
 
       // eslint-disable-next-line no-cond-assign
       while ((child = children.shift())) {
         if (child.type === HybridDOMTreeNodeType.FRAGMENT) {
-          Array.prototype.unshift.apply(children, child.children);
+          children = child.children.concat(children);
         } else {
           childInstances.push(child.instance);
         }
@@ -78,7 +78,7 @@ const HybridDOMTreeChildNodePropertyDescriptors: {
             // eslint-disable-next-line no-cond-assign
             while ((fragmentChild = fragmentChildrenQueue.shift())) {
               if (fragmentChild.type === HybridDOMTreeNodeType.FRAGMENT) {
-                Array.prototype.unshift.apply(fragmentChildrenQueue, fragmentChild.children);
+                fragmentChildrenQueue = fragmentChild.children.concat(fragmentChildrenQueue);
               } else {
                 siblingInstance = fragmentChild.instance;
                 break;

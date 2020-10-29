@@ -1,4 +1,7 @@
+import type { ArgsType } from '@mofon-design/wc-core';
 import { MDWC } from './types';
+
+type ChildrenSpliceArgsType = ArgsType<MDWC.MDWCNode[]['splice']>;
 
 export const Children = {
   toArray(node: MDWC.MDWCNode): (MDWC.MDWCElement | MDWC.MDWCText)[] {
@@ -14,8 +17,14 @@ export const Children = {
 
       switch (typeof child) {
         case 'object':
-          if (Array.isArray(child)) children.splice(index + 1, 0, ...child);
-          else flattened.push(child);
+          if (Array.isArray(child)) {
+            let spliceArgs: ChildrenSpliceArgsType = [index + 1, 0];
+            spliceArgs = spliceArgs.concat(child) as ChildrenSpliceArgsType;
+
+            Array.prototype.splice.apply(children, spliceArgs);
+          } else {
+            flattened.push(child);
+          }
           break;
         case 'boolean':
         case 'undefined':

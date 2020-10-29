@@ -9,11 +9,10 @@ import { applyProperties, applyPropertyUpdateQueue } from './applyProperties';
  */
 export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
   const fragment = document.createDocumentFragment();
-  const refUpdatesQueue: ArgsType<typeof applyMDWCRef>[] = [];
 
   let instance: Node;
   let parentInstance: Node;
-  let childInstances: Node[];
+  let childInstances: readonly Node[];
   let nextSiblingInstance: Node | null;
 
   let payload: DiffQueueItem;
@@ -23,6 +22,7 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
   let children: readonly HybridDOMTreeChildNode[];
 
   let refUpdate: ArgsType<typeof applyMDWCRef>;
+  let refUpdatesQueue: ArgsType<typeof applyMDWCRef>[] = [];
   let refUpdatesQueueFragment: ArgsType<typeof applyMDWCRef>[];
 
   let childrenAndParentInstanceQueue: [readonly HybridDOMTreeChildNode[], Node][];
@@ -138,17 +138,17 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
               if (child.ref) {
                 refUpdatesQueueFragment.unshift([child.ref, null]);
               }
-              Array.prototype.unshift.apply(childrenQueue, child.children);
+              childrenQueue = child.children.concat(childrenQueue);
               break;
             case HybridDOMTreeNodeType.FRAGMENT:
-              Array.prototype.unshift.apply(childrenQueue, child.children);
+              childrenQueue = child.children.concat(childrenQueue);
               break;
             default:
               break;
           }
         }
 
-        Array.prototype.push.apply(refUpdatesQueue, refUpdatesQueueFragment);
+        refUpdatesQueue = refUpdatesQueue.concat(refUpdatesQueueFragment);
 
         break;
       case DiffType.MOVE:
