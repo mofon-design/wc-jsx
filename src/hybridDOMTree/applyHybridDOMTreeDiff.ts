@@ -33,7 +33,7 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
   let instanceTraversalIndex: number;
   let refUpdateTraversalIndex: number;
 
-  for (queueTraversalIndex = 0; queueTraversalIndex < queue.length; queueTraversalIndex += 1) {
+  for (queueTraversalIndex = queue.length - 1; queueTraversalIndex >= 0; queueTraversalIndex -= 1) {
     payload = queue[queueTraversalIndex];
 
     switch (payload.type) {
@@ -127,7 +127,7 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
           node.parentInstance.removeChild(node.instance);
 
           if (node.ref) {
-            refUpdatesQueueFragment.unshift([node.ref, null]);
+            refUpdatesQueueFragment.push([node.ref, null]);
           }
         }
 
@@ -136,7 +136,7 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
           switch (child.type) {
             case HybridDOMTreeNodeType.HTML_ELEMENT:
               if (child.ref) {
-                refUpdatesQueueFragment.unshift([child.ref, null]);
+                refUpdatesQueueFragment.push([child.ref, null]);
               }
               childrenQueue = child.children.concat(childrenQueue);
               break;
@@ -148,7 +148,7 @@ export function applyHybridDOMTreeDiff(queue: DiffQueueItem[]): void {
           }
         }
 
-        refUpdatesQueue = refUpdatesQueue.concat(refUpdatesQueueFragment);
+        refUpdatesQueue = refUpdatesQueue.concat(refUpdatesQueueFragment.reverse());
 
         break;
       case DiffType.MOVE:

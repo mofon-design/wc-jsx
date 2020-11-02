@@ -100,7 +100,7 @@ export function diffHybridDOMTree(
         });
 
         if (existsNode === undefined || lastIndex === undefined) {
-          diffQueue.unshift({ node, type: DiffType.INSERT });
+          diffQueue.push({ node, type: DiffType.INSERT });
         } else {
           mapPrevIndexOfMatchedNodesToNextIndex[lastIndex] = matchedNodes.push(node) - 1;
         }
@@ -127,7 +127,7 @@ export function diffHybridDOMTree(
 
         if (existsNode === undefined || lastIndex === undefined) {
           attachHybridDOMTreeFromMDWCNode(nonEmptyMDWCNode.children, node);
-          diffQueue.unshift({ node, type: DiffType.INSERT });
+          diffQueue.push({ node, type: DiffType.INSERT });
         } else {
           mapPrevIndexOfMatchedNodesToNextIndex[lastIndex] = matchedNodes.push(node) - 1;
           queue.push({
@@ -167,13 +167,13 @@ export function diffHybridDOMTree(
 
         if (existsNode === undefined || lastIndex === undefined) {
           attachHybridDOMTreeFromMDWCNode(nonEmptyMDWCNode.children, node);
-          diffQueue.unshift({ node, type: DiffType.INSERT });
+          diffQueue.push({ node, type: DiffType.INSERT });
         } else {
           updates = diffProperties(existsNode.props, node.props);
           mapPrevIndexOfMatchedNodesToNextIndex[lastIndex] = matchedNodes.push(node) - 1;
 
           if (updates.length) {
-            diffQueue.unshift({ node, type: DiffType.UPDATE, updates });
+            diffQueue.push({ node, type: DiffType.UPDATE, updates });
           }
 
           queue.push({
@@ -187,9 +187,8 @@ export function diffHybridDOMTree(
       parent.children.push(node);
     }
 
-    lastIndex = 0;
     for (
-      traversalIndex = 0;
+      lastIndex = 0, traversalIndex = 0;
       traversalIndex < mapPrevIndexOfMatchedNodesToNextIndex.length;
       traversalIndex += 1
     ) {
@@ -209,7 +208,7 @@ export function diffHybridDOMTree(
       existsNode = matchedNodes[traversalIndex];
 
       if (existsNode) {
-        diffQueue.unshift({ node: existsNode, type: DiffType.MOVE });
+        diffQueue.push({ node: existsNode, type: DiffType.MOVE });
       }
     }
 
@@ -219,7 +218,7 @@ export function diffHybridDOMTree(
       existsNode = removedNodes[traversalIndex];
 
       if (existsNode) {
-        diffQueue.unshift({ node: existsNode, type: DiffType.REMOVE });
+        diffQueue.push({ node: existsNode, type: DiffType.REMOVE });
       }
     }
   }
